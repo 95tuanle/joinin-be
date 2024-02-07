@@ -2,12 +2,22 @@
 GET {{host}}
 
 
+### Sign up
+POST {{host}}/auth/sign-up
+Content-Type: application/json
+
+{
+  "email": "john",
+  "password": "changeme"
+}
+
+
 ### Sign in
 POST {{host}}/auth/sign-in
 Content-Type: application/json
 
 {
-  "username": "john",
+  "email": "john",
   "password": "changeme"
 }
 
