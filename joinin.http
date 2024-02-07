@@ -1,0 +1,21 @@
+### Get index
+GET {{host}}
+
+
+### Sign in
+POST {{host}}/auth/sign-in
+Content-Type: application/json
+
+{
+  "username": "john",
+  "password": "changeme"
+}
+
+> {%
+  client.global.set("access_token", response.body['access_token'])
+%}
+
+
+### Get user
+GET {{host}}/user
+Authorization: Bearer {{access_token}}
