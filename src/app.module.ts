@@ -8,7 +8,6 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { EventsModule } from './events/events.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
