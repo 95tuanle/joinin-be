@@ -7,8 +7,11 @@ POST {{host}}/auth/sign-up
 Content-Type: application/json
 
 {
-  "email": "john",
-  "password": "changeme"
+  "email": "tlna95@icloud.com",
+  "password": "31121995",
+  "firstName": "Nguyen Anh Tuan",
+  "lastName": "Le",
+  "role": "user"
 }
 
 
@@ -17,8 +20,8 @@ POST {{host}}/auth/sign-in
 Content-Type: application/json
 
 {
-  "email": "john",
-  "password": "changeme"
+  "email": "tlna95@icloud.com",
+  "password": "31121995"
 }
 
 > {%
