@@ -10,7 +10,13 @@ export class AuthController {
   @Public()
   @UseGuards(LocalAuthGuard)
   @Post('sign-in')
-  async login(@Request() req: any) {
+  async signIn(@Request() req: any) {
     return this.authService.signIn(req.user);
+  }
+
+  @Public()
+  @Post('sign-up')
+  async signUp(@Request() req: any) {
+    return this.authService.signUp(req.body);
   }
 }

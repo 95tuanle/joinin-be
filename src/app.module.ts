@@ -9,7 +9,16 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { EventsModule } from './events/events.module';
 
 @Module({
-  imports: [EventsModule],
+  imports: [
+    AuthModule,
+    UserModule,
+    EventsModule,
+    MongooseModule.forRoot(
+      process.env['MONGODB_URI']
+        .replace('<password>', process.env.MONGODB_PASSWORD)
+        .replace('<database>', process.env.MONGODB_DATABASE),
+    ),
+  ],
   controllers: [AppController],
   providers: [
     AppService,
