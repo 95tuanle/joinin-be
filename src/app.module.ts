@@ -5,21 +5,27 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UsersModule } from './users/users.module';
+import { UserModule } from './user/user.module';
+import { EventsModule } from './events/events.module';
+import { EventModule } from './event/event.module';
 
 @Module({
+  controllers: [AppController],
   imports: [
     AuthModule,
-    // UserModule,
+    UserModule,
+    UsersModule,
     MongooseModule.forRoot(
       process.env['MONGODB_URI']
         .replace('<password>', process.env.MONGODB_PASSWORD)
         .replace('<database>', process.env.MONGODB_DATABASE),
     ),
+    EventModule,
+    EventsModule,
   ],
-  controllers: [AppController],
   providers: [
     AppService,
-    // UserService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

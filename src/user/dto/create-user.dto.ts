@@ -25,19 +25,19 @@ export class CreateUserDto {
   @Transform(({ value }) => value.trim())
   readonly firstName: string;
 
-  @IsNotEmpty()
-  @IsString()
-  @Transform(({ value }) => value.trim())
-  readonly lastName: string;
-
   @IsOptional()
   @IsString()
   @Transform(({ value }) => value.trim())
+  readonly lastName?: string;
+
+  @IsOptional()
+  @IsString()
+  @Transform(({ value }) => (value.trim() === '' ? null : value.trim()))
   readonly oauthProvider?: string;
 
   @IsOptional()
   @IsString()
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => (value.trim() === '' ? null : value.trim()))
   readonly oauthId?: string;
 
   @IsOptional() @Equals('user') readonly role?: 'user';

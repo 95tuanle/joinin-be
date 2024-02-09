@@ -9,6 +9,8 @@ import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from '../user/user.module';
 
 @Module({
+  controllers: [AuthController],
+  exports: [AuthService],
   imports: [
     UserModule,
     PassportModule,
@@ -17,8 +19,6 @@ import { UserModule } from '../user/user.module';
       signOptions: { expiresIn: '60m' },
     }),
   ],
-  controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
-  exports: [AuthService],
 })
 export class AuthModule {}

@@ -8,9 +8,9 @@ Content-Type: application/json
 
 {
   "email": "tlna95@icloud.com",
-    "password": "31121995",
-  "oauthProvider": " ",
-  "oauthId": " ",
+  "password": "31121995",
+  "oauthProvider": "a scdsac ",
+  "oauthId": "ascasc  ",
   "firstName": "Nguyen Anh Tuan",
   "lastName": "Le",
   "role": "user"
@@ -33,4 +33,14 @@ Content-Type: application/json
 
 ### Get user
 GET {{host}}/user
+Authorization: Bearer {{access_token}}
+
+
+### Get all users
+GET {{host}}/users
+Authorization: Bearer {{access_token}}
+
+
+### Get all events
+GET {{host}}/events
 Authorization: Bearer {{access_token}}
