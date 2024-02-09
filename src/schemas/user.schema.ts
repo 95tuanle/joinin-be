@@ -13,7 +13,11 @@ export class User {
   })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({
+    required() {
+      return !this.oauthProvider || !this.oauthId;
+    },
+  })
   password: string;
 
   @Prop({ required: true })
