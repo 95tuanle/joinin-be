@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { MongooseModule } from '@nestjs/mongoose';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { MongooseModule } from '@nestjs/mongoose';
         .replace('<password>', process.env.MONGODB_PASSWORD)
         .replace('<database>', process.env.MONGODB_DATABASE),
     ),
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [
