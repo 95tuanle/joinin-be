@@ -15,23 +15,17 @@ import { UpdateEventDto } from 'src/event/dto/update-event.dto';
 
 @Controller('event')
 export class EventController {
-  constructor(private eventsService: EventService) {}
+  constructor(private eventService: EventService) {}
 
-  @Get()
-  getEvents() {
-    return this.eventsService.getEvents();
-  }
-
-  @Post()
-  createEvent(@Body() createEventDto: CreateEventDto) {
-    return this.eventsService.createEvent(createEventDto);
+  @Post() createEvent(@Body() createEventDto: CreateEventDto) {
+    return this.eventService.createEvent(createEventDto);
   }
 
   @Get(':id')
   async getEventById(@Param('id') id: string) {
     const isValid = mongoose.Types.ObjectId.isValid(id);
     if (!isValid) throw new HttpException('Event Not Found', 404);
-    const event = await this.eventsService.getEventById(id);
+    const event = await this.eventService.getEventById(id);
     if (!event) throw new HttpException('Event Not Found', 404);
     return event;
   }
@@ -43,10 +37,7 @@ export class EventController {
   ) {
     const isValid = mongoose.Types.ObjectId.isValid(id);
     if (!isValid) throw new HttpException('Invalid ID', 400);
-    const updateEvent = await this.eventsService.updateEvent(
-      id,
-      updateEventDto,
-    );
+    const updateEvent = await this.eventService.updateEvent(id, updateEventDto);
     if (!updateEvent) throw new HttpException('User Not Found', 404);
     return updateEvent;
   }
@@ -55,7 +46,7 @@ export class EventController {
   async deleteEvent(@Param('id') id: string) {
     const isValid = mongoose.Types.ObjectId.isValid(id);
     if (!isValid) throw new HttpException('Invalid ID', 400);
-    const deletedEvent = await this.eventsService.deleteEvent(id);
+    const deletedEvent = await this.eventService.deleteEvent(id);
     if (!deletedEvent) throw new HttpException('User Not Found', 404);
     return;
   }
