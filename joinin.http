@@ -36,7 +36,11 @@ GET {{host}}/user
 Authorization: Bearer {{access_token}}
 
 
-
 ### Get all users
 GET {{host}}/users
+Authorization: Bearer {{access_token}}
+
+
+### Get all events
+GET {{host}}/events
 Authorization: Bearer {{access_token}}

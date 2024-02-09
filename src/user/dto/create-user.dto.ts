@@ -25,10 +25,10 @@ export class CreateUserDto {
   @Transform(({ value }) => value.trim())
   readonly firstName: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @Transform(({ value }) => value.trim())
-  readonly lastName: string;
+  readonly lastName?: string;
 
   @IsOptional()
   @IsString()
