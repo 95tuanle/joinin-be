@@ -5,11 +5,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Event, EventSchema } from 'src/event/schemas/event.schema';
 
 @Module({
+  controllers: [EventController],
+  exports: [MongooseModule, EventService],
   imports: [
     MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
   ],
-  controllers: [EventController],
   providers: [EventService],
-  exports: [MongooseModule, EventService],
 })
 export class EventModule {}

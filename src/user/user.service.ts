@@ -16,8 +16,9 @@ export class UserService {
     return this.userModel.findOne({ email: email });
   }
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    // TODO: hash password
     const createdUser = new this.userModel(createUserDto);
-    return createdUser.save();
+    return await createdUser.save();
   }
 }
