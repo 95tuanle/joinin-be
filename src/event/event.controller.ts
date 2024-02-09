@@ -9,9 +9,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { EventService } from './event.service';
-import { CreateEventDto } from 'src/dto/create-event.dto';
+import { CreateEventDto } from 'src/event/dto/create-event.dto';
 import mongoose from 'mongoose';
-import { UpdateEventDto } from 'src/dto/update-event.dto';
+import { UpdateEventDto } from 'src/event/dto/update-event.dto';
 
 @Controller('event')
 export class EventController {

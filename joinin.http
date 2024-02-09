@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
   "email": "tlna95@icloud.com",
-    "password": "31121995",
+  "password": "31121995",
   "oauthProvider": " ",
   "oauthId": " ",
   "firstName": "Nguyen Anh Tuan",
