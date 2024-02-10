@@ -1,8 +1,16 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpException,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
 import { CreateUserDto } from '../user/dto/create-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +26,12 @@ export class AuthController {
   @Public()
   @Post('sign-up')
   async signUp(@Body() createUserDto: CreateUserDto) {
-    return this.authService.signUp(createUserDto);
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+    const user = await this.authService.signUp(createUserDto);
+    if (user) {
+      user.password = undefined;
+      return user;
+    }
+    throw new HttpException('Unable to create user', 500);
   }
 }

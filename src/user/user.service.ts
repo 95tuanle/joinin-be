@@ -17,7 +17,6 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    // TODO: hash password
     const createdUser = new this.userModel(createUserDto);
     return await createdUser.save();
   }
