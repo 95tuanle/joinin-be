@@ -5,8 +5,10 @@ import { EventsService } from './events.service';
 export class EventsController {
   constructor(private eventsService: EventsService) {}
 
-  @Get() // TODO: only allow admin users to access this endpoint
+  @Get()
   findAll() {
-    return this.eventsService.findAll();
+    return {
+      message: 'pending',
+    };
   }
 }

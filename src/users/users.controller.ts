@@ -5,8 +5,10 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
-  @Get() // TODO: only allow admin users to access this endpoint
+  @Get()
   async findAll() {
-    return this.usersService.findAll();
+    return {
+      message: 'pending',
+    };
   }
 }
