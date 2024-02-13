@@ -6,9 +6,7 @@ import { Public } from './auth/decorators/public.decorator';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Public()
-  @Get()
-  getIndex(): string {
+  @Public() @Get() getIndex() {
     return this.appService.getIndex();
   }
 }
