@@ -1,7 +1,7 @@
 export class CreateEventDto {
-  eventName: string;
-  eventDesc: string;
-  eventVenue: string;
-  eventDateTime: string;
-  eventOwner: string;
+  eventName: string
+  eventDesc: string
+  eventVenue: string
+  eventDateTime: string
+  eventOwner: string
 }

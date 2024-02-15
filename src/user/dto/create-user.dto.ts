@@ -6,40 +6,40 @@ import {
   IsString,
   MinLength,
   ValidateIf,
-} from 'class-validator';
-import { Transform } from 'class-transformer';
-import { Role } from '../../auth/enums/role.enum';
+} from 'class-validator'
+import { Transform } from 'class-transformer'
+import { Role } from '../../auth/enums/role.enum'
 
 export class CreateUserDto {
   @IsEmail()
   @Transform(({ value }) => value.trim().toLowerCase())
-  readonly email: string;
+  readonly email: string
 
   @ValidateIf((o) => !o.oauthProvider || !o.oauthId)
   @IsNotEmpty()
   @IsString()
   @MinLength(8)
-  password: string;
+  password: string
 
   @IsNotEmpty()
   @IsString()
   @Transform(({ value }) => value.trim())
-  readonly firstName: string;
+  readonly firstName: string
 
   @IsOptional()
   @IsString()
   @Transform(({ value }) => value.trim())
-  readonly lastName?: string;
+  readonly lastName?: string
 
   @IsOptional()
   @IsString()
   @Transform(({ value }) => (value.trim() === '' ? null : value.trim()))
-  readonly oauthProvider?: string;
+  readonly oauthProvider?: string
 
   @IsOptional()
   @IsString()
   @Transform(({ value }) => (value.trim() === '' ? null : value.trim()))
-  readonly oauthId?: string;
+  readonly oauthId?: string
 
-  @IsOptional() @Equals(Role.User) readonly role?: Role.User;
+  @IsOptional() @Equals(Role.User) readonly role?: Role.User
 }
