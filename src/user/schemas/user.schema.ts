@@ -1,9 +1,9 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
-import mongoose, { HydratedDocument } from 'mongoose'
-import { Role } from '../../auth/enums/role.enum'
-import { Event } from 'src/event/schemas/event.schema'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { Role } from '../../auth/enums/role.enum';
+import { Event } from 'src/event/schemas/event.schema';
 
-export type UserDocument = HydratedDocument<User>
+export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
@@ -13,32 +13,32 @@ export class User {
     trim: true,
     lowercase: true,
   })
-  email: string
+  email: string;
 
   @Prop({
     required() {
-      return !this.oauthProvider || !this.oauthId
+      return !this.oauthProvider || !this.oauthId;
     },
   })
-  password: string
+  password: string;
 
-  @Prop({ required: true }) firstName: string
+  @Prop({ required: true }) firstName: string;
 
-  @Prop() lastName?: string
+  @Prop() lastName?: string;
 
-  @Prop({ default: null }) oauthProvider: string
+  @Prop({ default: null }) oauthProvider: string;
 
-  @Prop({ default: null }) oauthId: string
+  @Prop({ default: null }) oauthId: string;
 
   @Prop({
     type: String,
     enum: [Role.User, Role.Admin],
     default: Role.User,
   })
-  role: Role.User | Role.Admin
+  role: Role.User | Role.Admin;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }] })
-  events: Event[]
+  events: Event[];
 }
 
-export const UserSchema = SchemaFactory.createForClass(User)
+export const UserSchema = SchemaFactory.createForClass(User);
