@@ -12,11 +12,11 @@ import { EventService } from 'src/event/event.service';
   //providers: [EventUserService],
   exports: [MongooseModule, EventUserService],
   providers: [EventUserService, UserService, EventService],
-  imports:[
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }, { name: Event.name, schema: EventSchema}]),
-  ]
-   
+  imports: [
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: Event.name, schema: EventSchema },
+    ]),
+  ],
 })
 export class EventUserModule {}
-
-

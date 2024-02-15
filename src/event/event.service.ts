@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId } from 'mongoose';
+import { Model } from 'mongoose';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';
 import { UpdateEventDto } from 'src/event/dto/update-event.dto';
 import { Event } from 'src/event/schemas/event.schema';
@@ -15,34 +15,43 @@ export class EventService {
   }
 
   async getEvents(): Promise<Event[] | undefined> {
-    return await this.eventModel.find();
+    return this.eventModel.find();
   }
 
-  async getEventById(id: string): Promise<Event | undefined>  {
-    return await this.eventModel.findById(id);
+  async getEventById(id: string): Promise<Event | undefined> {
+    return this.eventModel.findById(id);
   }
 
   //User Join an event
   async addUserToEvent(eventId: string, userId: string): Promise<void> {
-    await this.eventModel.findByIdAndUpdate(
-    eventId, 
-    { $addToSet: { eventparticipant: userId }}
-    );
+    await this.eventModel.findByIdAndUpdate(eventId, {
+      $addToSet: { eventparticipant: userId },
+    });
   }
 
   //Owner Update the Event
   async updateEvent(updateEventDto: UpdateEventDto) {
     const event = await this.eventModel.findById(updateEventDto.eventId).exec();
-    const user = await this.eventModel.findById(updateEventDto.eventId).populate('eventOwner').exec();
-    if (!event || user._id.toString() !== updateEventDto.requestUser) throw new UnauthorizedException ('Not Authorized changes')
-    return this.eventModel.findByIdAndUpdate(updateEventDto.eventId, updateEventDto, { new: true });
+    const user = await this.eventModel
+      .findById(updateEventDto.eventId)
+      .populate('eventOwner')
+      .exec();
+    if (!event || user._id.toString() !== updateEventDto.requestUser)
+      throw new UnauthorizedException('Not Authorized changes');
+    return this.eventModel.findByIdAndUpdate(
+      updateEventDto.eventId,
+      updateEventDto,
+      { new: true },
+    );
   }
 
   async deleteEvent(id: string) {
-    return await this.eventModel.findByIdAndDelete(id);
+    return this.eventModel.findByIdAndDelete(id);
   }
 
-  async removeUserFromEvent(eventId: string, userId: string){
-    await this.eventModel.findByIdAndUpdate(eventId, { $pull : { eventparticipant: userId }});
+  async removeUserFromEvent(eventId: string, userId: string) {
+    await this.eventModel.findByIdAndUpdate(eventId, {
+      $pull: { eventparticipant: userId },
+    });
   }
 }

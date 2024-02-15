@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-import { Role } from '../../auth/enums/role.enum';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Role } from '../../auth/enums/role.enum';
 import { Event } from 'src/event/schemas/event.schema';
 
 export type UserDocument = HydratedDocument<User>;
@@ -37,10 +36,9 @@ export class User {
     default: Role.User,
   })
   role: Role.User | Role.Admin;
-  role: 'user' | 'admin';
 
-  @Prop({type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event'}]})
-  events: Event[]
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }] })
+  events: Event[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

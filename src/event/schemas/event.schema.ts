@@ -14,13 +14,13 @@ export class Event {
 
   @Prop({ required: true }) endDate: Date;
 
-  @Prop({ required: true, type: mongoose.Schema.ObjectId, ref: 'User'})
-  owner: User
+  @Prop({ required: true, type: mongoose.Schema.ObjectId, ref: 'User' })
+  owner: User;
 
   @Prop({ required: true, default: true })
   validEvent: boolean;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}] })
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
   eventparticipant: User[];
 }
 

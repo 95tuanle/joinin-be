@@ -1,5 +1,4 @@
 export class QuitEventDto {
-    eventId: string;
-    requestUser: string;
-  }
-  
+  eventId: string;
+  requestUser: string;
+}

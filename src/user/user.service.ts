@@ -26,13 +26,14 @@ export class UserService {
   }
 
   async addEventToUser(userId: string, eventId: string): Promise<void> {
-    await this.userModel.findByIdAndUpdate(
-      userId,
-      { $addToSet: {events: eventId}}
-    )
+    await this.userModel.findByIdAndUpdate(userId, {
+      $addToSet: { events: eventId },
+    });
   }
 
-  async removeEventFromUser(userId: string, eventId: string){
-    await this.userModel.findByIdAndUpdate(userId, { $pull: { events: eventId } });
+  async removeEventFromUser(userId: string, eventId: string) {
+    await this.userModel.findByIdAndUpdate(userId, {
+      $pull: { events: eventId },
+    });
   }
 }

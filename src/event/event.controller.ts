@@ -33,9 +33,7 @@ export class EventController {
   }
 
   @Patch()
-  async updateEvent(
-    @Body() updateEventDto: UpdateEventDto,
-  ) {
+  async updateEvent(@Body() updateEventDto: UpdateEventDto) {
     const isValid = mongoose.Types.ObjectId.isValid(updateEventDto.eventId);
     if (!isValid) throw new HttpException('Invalid ID', 400);
     const updateEvent = await this.eventService.updateEvent(updateEventDto);
