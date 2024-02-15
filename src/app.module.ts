@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { UserModule } from './user/user.module';
 import { EventsModule } from './events/events.module';
 import { EventModule } from './event/event.module';
+import { EventUserModule } from './event-user/event-user.module';
 
 @Module({
   controllers: [AppController],
@@ -23,13 +24,16 @@ import { EventModule } from './event/event.module';
     ),
     EventModule,
     EventsModule,
+    EventUserModule,
   ],
   providers: [
     AppService,
+    /**
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    */
   ],
 })
 export class AppModule {}
