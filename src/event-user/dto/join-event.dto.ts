@@ -1,4 +1,4 @@
 export class JoinEventDto {
-  eventId: string;
-  requestUser: string;
+  eventId: string
+  requestUser: string
 }

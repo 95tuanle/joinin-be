@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { EventsService } from './events.service';
+import { Controller, Get } from '@nestjs/common'
+import { EventsService } from './events.service'
 
 @Controller('events')
 export class EventsController {
@@ -7,6 +7,6 @@ export class EventsController {
 
   @Get('upcoming')
   findUpcoming() {
-    return this.eventsService.findUpcoming();
+    return this.eventsService.findUpcoming()
   }
 }
