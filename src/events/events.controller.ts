@@ -5,10 +5,8 @@ import { EventsService } from './events.service';
 export class EventsController {
   constructor(private eventsService: EventsService) {}
 
-  @Get()
-  findAll() {
-    return {
-      message: 'pending',
-    };
+  @Get('upcoming')
+  findUpcoming() {
+    return this.eventsService.findUpcoming();
   }
 }
