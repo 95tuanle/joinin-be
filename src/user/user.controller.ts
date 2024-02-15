@@ -7,11 +7,8 @@ export class UserController {
 
   @Get()
   async getUser(@Request() req: any) {
-    const user = await this.userService.findById(req.user._id);
-    if (user) {
-      user.password = undefined;
-      return user;
-    }
+    const user = await this.userService.findByIdWithoutPassword(req.user._id);
+    if (user) return user;
     throw new HttpException('User not found', 404);
   }
 }

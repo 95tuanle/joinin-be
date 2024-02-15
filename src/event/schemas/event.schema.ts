@@ -2,22 +2,20 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { User } from 'src/user/schemas/user.schema';
 
-@Schema({ timestamps: true })
+@Schema()
 export class Event {
-  @Prop({ required: true })
-  eventName: string;
+  @Prop({ required: true }) name: string;
 
-  @Prop({ required: true })
-  eventDesc: string;
+  @Prop({ required: true }) description: string;
 
-  @Prop({ required: true })
-  eventVenue: string;
+  @Prop({ required: true }) venue: string;
 
-  @Prop({ required: true })
-  eventDateTime: Date;
+  @Prop({ required: true }) startDate: Date;
+
+  @Prop({ required: true }) endDate: Date;
 
   @Prop({ required: true, type: mongoose.Schema.ObjectId, ref: 'User'})
-  eventOwner: User
+  owner: User
 
   @Prop({ required: true, default: true })
   validEvent: boolean;

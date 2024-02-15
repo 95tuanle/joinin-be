@@ -10,4 +10,8 @@ export class EventsService {
   findAll(): Promise<Event[]> {
     return this.eventModel.find();
   }
+
+  findUpcoming() {
+    return this.eventModel.find({ date: { $gte: new Date() } });
+  }
 }

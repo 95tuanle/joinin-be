@@ -44,3 +44,54 @@ Authorization: Bearer {{access_token}}
 ### Get all events
 GET {{host}}/events
 Authorization: Bearer {{access_token}}
+
+
+### Admin sign in
+POST {{host}}/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "tlna95@icloud.com",
+  "password": "31121995"
+}
+> {%
+  client.global.set("admin_access_token", response.body['access_token'])
+%}
+
+
+### Admin create admin
+POST {{host}}/admin/sign-up
+Content-Type: application/json
+Authorization: Bearer {{admin_access_token}}
+
+{
+  "email": "admin@email.com",
+  "password": "admin@123",
+  "firstName": "Admin first name",
+  "lastName": "Admin last name",
+  "role": "admin"
+}
+
+
+### New admin sign in
+POST {{host}}/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "admin@email.com",
+  "password": "admin@123"
+}
+> {%
+  client.global.set("new_admin_access_token", response.body['access_token'])
+%}
+
+
+
+### Admin get all users
+GET {{host}}/admin/users
+Authorization: Bearer {{admin_access_token}}
+
+
+### Admin get all events
+GET {{host}}/admin/events
+Authorization: Bearer {{admin_access_token}}

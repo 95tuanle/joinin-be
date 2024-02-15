@@ -10,7 +10,7 @@ import {
 import { Transform } from 'class-transformer';
 import { Role } from '../../auth/enums/role.enum';
 
-export class CreateUserDto {
+export class CreateAdminDto {
   @IsEmail()
   @Transform(({ value }) => value.trim().toLowerCase())
   readonly email: string;
@@ -41,5 +41,5 @@ export class CreateUserDto {
   @Transform(({ value }) => (value.trim() === '' ? null : value.trim()))
   readonly oauthId?: string;
 
-  @IsOptional() @Equals(Role.User) readonly role?: Role.User;
+  @Equals(Role.Admin) readonly role?: Role.Admin;
 }

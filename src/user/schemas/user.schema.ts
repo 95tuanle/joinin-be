@@ -1,4 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument } from 'mongoose';
+import { Role } from '../../auth/enums/role.enum';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Event } from 'src/event/schemas/event.schema';
 
@@ -21,23 +23,20 @@ export class User {
   })
   password: string;
 
-  @Prop({ required: true })
-  firstName: string;
+  @Prop({ required: true }) firstName: string;
 
-  @Prop()
-  lastName?: string;
+  @Prop() lastName?: string;
 
-  @Prop({ default: null })
-  oauthProvider: string;
+  @Prop({ default: null }) oauthProvider: string;
 
-  @Prop({ default: null })
-  oauthId: string;
+  @Prop({ default: null }) oauthId: string;
 
   @Prop({
     type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
+    enum: [Role.User, Role.Admin],
+    default: Role.User,
   })
+  role: Role.User | Role.Admin;
   role: 'user' | 'admin';
 
   @Prop({type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event'}]})
