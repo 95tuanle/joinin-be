@@ -11,6 +11,7 @@ import { EventsModule } from './events/events.module';
 import { EventModule } from './event/event.module';
 import { RolesGuard } from './auth/guards/roles.guard';
 import { AdminModule } from './admin/admin.module';
+import { EventUserModule } from './event-user/event-user.module';
 
 @Module({
   controllers: [AppController],
@@ -26,6 +27,7 @@ import { AdminModule } from './admin/admin.module';
     EventModule,
     EventsModule,
     AdminModule,
+    EventUserModule,
   ],
   providers: [
     AppService,

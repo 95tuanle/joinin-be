@@ -24,4 +24,16 @@ export class UserService {
   async create(createDto: CreateUserDto | CreateAdminDto): Promise<User> {
     return await new this.userModel(createDto).save();
   }
+
+  async addEventToUser(userId: string, eventId: string): Promise<void> {
+    await this.userModel.findByIdAndUpdate(userId, {
+      $addToSet: { events: eventId },
+    });
+  }
+
+  async removeEventFromUser(userId: string, eventId: string) {
+    await this.userModel.findByIdAndUpdate(userId, {
+      $pull: { events: eventId },
+    });
+  }
 }

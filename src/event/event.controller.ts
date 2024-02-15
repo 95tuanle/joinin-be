@@ -18,6 +18,8 @@ export class EventController {
   constructor(private eventService: EventService) {}
 
   @Post() createEvent(@Body() createEventDto: CreateEventDto) {
+    const isValid = mongoose.Types.ObjectId.isValid(createEventDto.eventOwner);
+    if (isValid) throw new HttpException('Invalid User Id', 400);
     return this.eventService.createEvent(createEventDto);
   }
 
@@ -30,14 +32,11 @@ export class EventController {
     return event;
   }
 
-  @Patch(':id')
-  async updateEvent(
-    @Param('id') id: string,
-    @Body() updateEventDto: UpdateEventDto,
-  ) {
-    const isValid = mongoose.Types.ObjectId.isValid(id);
+  @Patch()
+  async updateEvent(@Body() updateEventDto: UpdateEventDto) {
+    const isValid = mongoose.Types.ObjectId.isValid(updateEventDto.eventId);
     if (!isValid) throw new HttpException('Invalid ID', 400);
-    const updateEvent = await this.eventService.updateEvent(id, updateEventDto);
+    const updateEvent = await this.eventService.updateEvent(updateEventDto);
     if (!updateEvent) throw new HttpException('User Not Found', 404);
     return updateEvent;
   }
