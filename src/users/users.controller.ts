@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { Controller, Get } from '@nestjs/common'
+import { UsersService } from './users.service'
 
 @Controller('users')
 export class UsersController {
@@ -9,6 +9,6 @@ export class UsersController {
   async findAll() {
     return {
       message: 'pending',
-    };
+    }
   }
 }
