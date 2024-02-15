@@ -21,17 +21,13 @@ export class User {
   })
   password: string;
 
-  @Prop({ required: true })
-  firstName: string;
+  @Prop({ required: true }) firstName: string;
 
-  @Prop()
-  lastName?: string;
+  @Prop() lastName?: string;
 
-  @Prop({ default: null })
-  oauthProvider: string;
+  @Prop({ default: null }) oauthProvider: string;
 
-  @Prop({ default: null })
-  oauthId: string;
+  @Prop({ default: null }) oauthId: string;
 
   @Prop({
     type: String,
