@@ -8,10 +8,10 @@ export class EventsService {
   constructor(@InjectModel(Event.name) private eventModel: Model<Event>) {}
 
   findAll(): Promise<Event[]> {
-    return this.eventModel.find();
+    return this.eventModel.find().exec();
   }
 
   findUpcoming() {
-    return this.eventModel.find({ date: { $gte: new Date() } });
+    return this.eventModel.find({ date: { $gte: new Date() } }).exec();
   }
 }

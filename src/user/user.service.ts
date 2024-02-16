@@ -10,30 +10,34 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async findByIdWithoutPassword(_id: ObjectId): Promise<User | undefined> {
-    return this.userModel.findById(_id, '-password');
+    return this.userModel.findById(_id, '-password').exec();
   }
 
   async findRoleById(_id: ObjectId): Promise<User | undefined> {
-    return this.userModel.findById(_id, 'role');
+    return this.userModel.findById(_id, 'role').exec();
   }
 
   async findOneByEmail(email: string): Promise<User | undefined> {
-    return this.userModel.findOne({ email: email });
+    return this.userModel.findOne({ email: email }).exec();
   }
 
   async create(createDto: CreateUserDto | CreateAdminDto): Promise<User> {
     return await new this.userModel(createDto).save();
   }
 
-  async addEventToUser(userId: string, eventId: string): Promise<void> {
-    await this.userModel.findByIdAndUpdate(userId, {
-      $addToSet: { events: eventId },
-    });
+  async addEventToUser(userId: string, eventId: string): Promise<User> {
+    return await this.userModel
+      .findByIdAndUpdate(userId, {
+        $addToSet: { events: eventId },
+      })
+      .exec();
   }
 
-  async removeEventFromUser(userId: string, eventId: string) {
-    await this.userModel.findByIdAndUpdate(userId, {
-      $pull: { events: eventId },
-    });
+  async removeEventFromUser(userId: string, eventId: string): Promise<User> {
+    return await this.userModel
+      .findByIdAndUpdate(userId, {
+        $pull: { events: eventId },
+      })
+      .exec();
   }
 }
