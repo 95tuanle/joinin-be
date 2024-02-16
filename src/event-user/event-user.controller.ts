@@ -25,7 +25,7 @@ export class EventUserController {
   }
 
   @Post('join')
-  async joinEvent(@Body() joinEventDto: QuitEventDto): Promise<void> {
+  async joinEvent(@Body() joinEventDto: QuitEventDto) {
     const eventIdIsValid = mongoose.Types.ObjectId.isValid(
       joinEventDto.eventId,
     );
