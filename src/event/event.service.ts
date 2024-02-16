@@ -15,18 +15,20 @@ export class EventService {
   }
 
   async getEvents(): Promise<Event[] | undefined> {
-    return this.eventModel.find();
+    return this.eventModel.find().exec();
   }
 
   async getEventById(id: string): Promise<Event | undefined> {
-    return this.eventModel.findById(id);
+    return this.eventModel.findById(id).exec();
   }
 
   //User Join an event
-  async addUserToEvent(eventId: string, userId: string): Promise<void> {
-    await this.eventModel.findByIdAndUpdate(eventId, {
-      $addToSet: { participants: userId },
-    });
+  async addUserToEvent(eventId: string, userId: string) {
+    return this.eventModel
+      .findByIdAndUpdate(eventId, {
+        $addToSet: { participants: userId },
+      })
+      .exec();
   }
 
   //Owner Update the Event
@@ -38,20 +40,20 @@ export class EventService {
       .exec();
     if (!event || user._id.toString() !== updateEventDto.requestUser)
       throw new UnauthorizedException('Not Authorized changes');
-    return this.eventModel.findByIdAndUpdate(
-      updateEventDto.eventId,
-      updateEventDto,
-      { new: true },
-    );
+    return this.eventModel
+      .findByIdAndUpdate(updateEventDto.eventId, updateEventDto, { new: true })
+      .exec();
   }
 
   async deleteEvent(id: string) {
-    return this.eventModel.findByIdAndDelete(id);
+    return this.eventModel.findByIdAndDelete(id).exec();
   }
 
   async removeUserFromEvent(eventId: string, userId: string) {
-    await this.eventModel.findByIdAndUpdate(eventId, {
-      $pull: { participants: userId },
-    });
+    return this.eventModel
+      .findByIdAndUpdate(eventId, {
+        $pull: { participants: userId },
+      })
+      .exec();
   }
 }
