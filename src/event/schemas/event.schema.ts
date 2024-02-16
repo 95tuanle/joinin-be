@@ -18,10 +18,10 @@ export class Event {
   owner: User;
 
   @Prop({ required: true, default: true })
-  validEvent: boolean;
+  isValid: boolean;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
-  eventparticipant: User[];
+  participants: User[];
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

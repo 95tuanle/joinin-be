@@ -25,7 +25,7 @@ export class EventService {
   //User Join an event
   async addUserToEvent(eventId: string, userId: string): Promise<void> {
     await this.eventModel.findByIdAndUpdate(eventId, {
-      $addToSet: { eventparticipant: userId },
+      $addToSet: { participants: userId },
     });
   }
 
@@ -51,7 +51,7 @@ export class EventService {
 
   async removeUserFromEvent(eventId: string, userId: string) {
     await this.eventModel.findByIdAndUpdate(eventId, {
-      $pull: { eventparticipant: userId },
+      $pull: { participants: userId },
     });
   }
 }
