@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';
@@ -17,10 +18,11 @@ import { UpdateEventDto } from 'src/event/dto/update-event.dto';
 export class EventController {
   constructor(private eventService: EventService) {}
 
-  @Post() createEvent(@Body() createEventDto: CreateEventDto) {
-    const isValid = mongoose.Types.ObjectId.isValid(createEventDto.eventOwner);
-    if (isValid) throw new HttpException('Invalid User Id', 400);
-    return this.eventService.createEvent(createEventDto);
+  @Post() createEvent(@Req() req, @Body() createEventDto: CreateEventDto) {
+    //const isValid = mongoose.Types.ObjectId.isValid(createEventDto.eventOwner);
+    //if (isValid) throw new HttpException('Invalid User Id', 400);
+
+    return this.eventService.createEvent(req.user._id, createEventDto);
   }
 
   @Get(':id')
@@ -33,10 +35,13 @@ export class EventController {
   }
 
   @Patch()
-  async updateEvent(@Body() updateEventDto: UpdateEventDto) {
+  async updateEvent(@Req() req, @Body() updateEventDto: UpdateEventDto) {
     const isValid = mongoose.Types.ObjectId.isValid(updateEventDto.eventId);
     if (!isValid) throw new HttpException('Invalid ID', 400);
-    const updateEvent = await this.eventService.updateEvent(updateEventDto);
+    const updateEvent = await this.eventService.updateEvent(
+      req.user._id,
+      updateEventDto,
+    );
     if (!updateEvent) throw new HttpException('User Not Found', 404);
     return updateEvent;
   }
@@ -48,5 +53,10 @@ export class EventController {
     const deletedEvent = await this.eventService.deleteEvent(id);
     if (!deletedEvent) throw new HttpException('User Not Found', 404);
     return;
+  }
+
+  @Get()
+  async getAllEvents() {
+    return this.eventService.getEvents();
   }
 }
