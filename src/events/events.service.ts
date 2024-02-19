@@ -7,11 +7,17 @@ import { Model } from 'mongoose';
 export class EventsService {
   constructor(@InjectModel(Event.name) private eventModel: Model<Event>) {}
 
-  findAll(): Promise<Event[]> {
-    return this.eventModel.find().exec();
+  async findAll() {
+    return await this.eventModel.find().exec();
   }
 
-  findUpcoming() {
-    return this.eventModel.find({ date: { $gte: new Date() } }).exec();
+  async findUpcoming() {
+    return await this.eventModel
+      .find({ startAt: { $gt: Date.now() } })
+      .populate(
+        'organizer participants',
+        '-password -role -oauthProvider -oauthId -events',
+      )
+      .exec();
   }
 }

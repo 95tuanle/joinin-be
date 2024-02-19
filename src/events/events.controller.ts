@@ -6,7 +6,7 @@ export class EventsController {
   constructor(private eventsService: EventsService) {}
 
   @Get('upcoming')
-  findUpcoming() {
-    return this.eventsService.findUpcoming();
+  async findUpcoming() {
+    return await this.eventsService.findUpcoming();
   }
 }

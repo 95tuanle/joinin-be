@@ -9,7 +9,6 @@ import { EventService } from 'src/event/event.service';
 
 @Module({
   controllers: [EventUserController],
-  //providers: [EventUserService],
   exports: [MongooseModule, EventUserService],
   providers: [EventUserService, UserService, EventService],
   imports: [
