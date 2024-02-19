@@ -7,6 +7,6 @@ export class AdminService {
   constructor(private userService: UserService) {}
 
   async signUp(createAdminDto: CreateAdminDto) {
-    return this.userService.create(createAdminDto);
+    return await this.userService.create(createAdminDto);
   }
 }
