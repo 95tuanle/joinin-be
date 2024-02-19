@@ -1,26 +1,32 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';
 import { UpdateEventDto } from 'src/event/dto/update-event.dto';
 import { Event } from 'src/event/schemas/event.schema';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class EventService {
-  constructor(@InjectModel(Event.name) private eventModel: Model<Event>) {}
+  constructor(
+    @InjectModel(Event.name) private eventModel: Model<Event>,
+    private userService: UserService,
+  ) {}
 
-  async createEvent(userId: string, createEventDto: CreateEventDto) {
-    const newEvent = new this.eventModel();
-    newEvent.name = createEventDto.eventName;
-    newEvent.description = createEventDto.eventDesc;
-    newEvent.startDate = createEventDto.eventStartDate;
-    newEvent.endDate = createEventDto.eventEndDate;
-    newEvent.venue = createEventDto.eventVenue;
-    return await newEvent.save();
+  async createEvent(userId: any, createEventDto: CreateEventDto) {
+    let event = {
+      ...createEventDto,
+      owner: await this.userService.findByIdWithoutPassword(userId),
+    };
+    console.log(createEventDto.description);
+    console.log(createEventDto.venue);
+    console.dir(event);
+    const res = await this.eventModel.create(event);
+    return res;
   }
 
   async getEvents(): Promise<Event[] | undefined> {
-    return this.eventModel.find().exec();
+    return this.eventModel.find({ isValid: true }).exec();
   }
 
   async getEventById(id: string): Promise<Event | undefined> {
@@ -51,7 +57,7 @@ export class EventService {
   }
 
   async deleteEvent(id: string) {
-    return this.eventModel.findByIdAndDelete(id).exec();
+    return this.eventModel.findByIdAndUpdate(id, { isValid: false }).exec();
   }
 
   async removeUserFromEvent(eventId: string, userId: string) {

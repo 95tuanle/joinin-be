@@ -19,9 +19,6 @@ export class EventController {
   constructor(private eventService: EventService) {}
 
   @Post() createEvent(@Req() req, @Body() createEventDto: CreateEventDto) {
-    //const isValid = mongoose.Types.ObjectId.isValid(createEventDto.eventOwner);
-    //if (isValid) throw new HttpException('Invalid User Id', 400);
-
     return this.eventService.createEvent(req.user._id, createEventDto);
   }
 
