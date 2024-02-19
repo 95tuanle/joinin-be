@@ -41,8 +41,54 @@ GET {{host}}/users
 Authorization: Bearer {{access_token}}
 
 
-### Get all events
-GET {{host}}/events
+### Create event
+POST {{host}}/event
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "title": "Event title",
+  "description": "Event description",
+  "location": "Event location",
+  "startAt": 1708461822000,
+  "endAt": 1708461822001,
+  "isValid": true
+}
+
+
+### Get upcoming events
+GET {{host}}/events/upcoming
+Authorization: Bearer {{access_token}}
+
+> {%
+  client.global.set("event_id", response.body[0]['_id'])
+%}
+
+
+### Get event
+GET {{host}}/event/get-by-id/{{event_id}}
+Authorization: Bearer {{access_token}}
+
+> {%
+  client.global.set("event_id", response.body['_id'])
+%}
+
+
+### Another user sign in
+POST {{host}}/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "admin@email.com",
+  "password": "admin@123"
+}
+> {%
+  client.global.set("access_token", response.body['access_token'])
+%}
+
+
+### JoinIn event
+GET {{host}}/event/joinin/{{event_id}}
 Authorization: Bearer {{access_token}}
 
 
@@ -51,21 +97,21 @@ POST {{host}}/auth/sign-in
 Content-Type: application/json
 
 {
-  "email": "tlna95@icloud.com",
-  "password": "31121995"
+  "email": "admin@email.com",
+  "password": "admin@123"
 }
 > {%
   client.global.set("admin_access_token", response.body['access_token'])
 %}
 
 
-### Admin create admin
+### Admin sign up admin
 POST {{host}}/admin/sign-up
 Content-Type: application/json
 Authorization: Bearer {{admin_access_token}}
 
 {
-  "email": "admin@email.com",
+  "email": "new_admin@email.com",
   "password": "admin@123",
   "firstName": "Admin first name",
   "lastName": "Admin last name",
@@ -78,11 +124,11 @@ POST {{host}}/auth/sign-in
 Content-Type: application/json
 
 {
-  "email": "admin@email.com",
+  "email": "new_admin@email.com",
   "password": "admin@123"
 }
 > {%
-  client.global.set("new_admin_access_token", response.body['access_token'])
+  client.global.set("admin_access_token", response.body['access_token'])
 %}
 
 

@@ -13,30 +13,30 @@ export class EventUserService {
     private eventService: EventService,
   ) {}
 
-  async joinEvent(eventId: string, userId: string) {
-    return {
-      event: await this.userService.addEventToUser(userId, eventId),
-      user: await this.eventService.addUserToEvent(eventId, userId),
-    };
-  }
+  // async joinEvent(eventId: string, userId: string) {
+  //   return {
+  //     event: await this.userService.addEventToUser(userId, eventId),
+  //     user: await this.eventService.addUserToEvent(eventId, userId),
+  //   };
+  // }
 
-  async quitEvent(eventId: string, userId: string) {
-    return {
-      event: await this.userService.removeEventFromUser(userId, eventId),
-      user: await this.eventService.removeUserFromEvent(eventId, userId),
-    };
-  }
+  // async quitEvent(eventId: string, userId: string) {
+  //   return {
+  //     event: await this.userService.removeEventFromUser(userId, eventId),
+  //     user: await this.eventService.removeUserFromEvent(eventId, userId),
+  //   };
+  // }
 
-  async getAllEventParticipant(eventId: string) {
-    const event = await this.eventModel
-      .findById(eventId)
-      .populate('participants')
-      .exec();
-    return event.participants.map((participant) => {
-      return {
-        username: participant.lastName + ', ' + participant.firstName,
-        email: participant.email,
-      };
-    });
-  }
+  // async getAllEventParticipant(eventId: string) {
+  //   const event = await this.eventModel
+  //     .findById(eventId)
+  //     .populate('participants')
+  //     .exec();
+  //   return event.participants.map((participant) => {
+  //     return {
+  //       username: participant.lastName + ', ' + participant.firstName,
+  //       email: participant.email,
+  //     };
+  //   });
+  // }
 }
