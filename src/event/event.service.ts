@@ -9,8 +9,13 @@ import { Event } from 'src/event/schemas/event.schema';
 export class EventService {
   constructor(@InjectModel(Event.name) private eventModel: Model<Event>) {}
 
-  async createEvent(createEventDto: CreateEventDto) {
-    const newEvent = new this.eventModel(createEventDto);
+  async createEvent(userId: string, createEventDto: CreateEventDto) {
+    const newEvent = new this.eventModel();
+    newEvent.name = createEventDto.eventName;
+    newEvent.description = createEventDto.eventDesc;
+    newEvent.startDate = createEventDto.eventStartDate;
+    newEvent.endDate = createEventDto.eventEndDate;
+    newEvent.venue = createEventDto.eventVenue;
     return await newEvent.save();
   }
 
@@ -32,13 +37,13 @@ export class EventService {
   }
 
   //Owner Update the Event
-  async updateEvent(updateEventDto: UpdateEventDto) {
+  async updateEvent(userId: string, updateEventDto: UpdateEventDto) {
     const event = await this.eventModel.findById(updateEventDto.eventId).exec();
     const user = await this.eventModel
       .findById(updateEventDto.eventId)
       .populate('eventOwner')
       .exec();
-    if (!event || user._id.toString() !== updateEventDto.requestUser)
+    if (!event || user._id.toString() !== userId)
       throw new UnauthorizedException('Not Authorized changes');
     return this.eventModel
       .findByIdAndUpdate(updateEventDto.eventId, updateEventDto, { new: true })
