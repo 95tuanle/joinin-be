@@ -101,6 +101,11 @@ GET {{host}}/event/leave/{{event_id}}
 Authorization: Bearer {{access_token}}
 
 
+### Get joined events
+GET {{host}}/events/joined
+Authorization: Bearer {{access_token}}
+
+
 ### Admin sign in
 POST {{host}}/auth/sign-in
 Content-Type: application/json

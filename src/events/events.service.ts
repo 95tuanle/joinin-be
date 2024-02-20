@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Event } from '../event/schemas/event.schema';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 
 @Injectable()
 export class EventsService {
@@ -14,6 +14,17 @@ export class EventsService {
   async findUpcoming() {
     return await this.eventModel
       .find({ startAt: { $gt: Date.now() } })
+      .sort('startAt')
+      .populate(
+        'organizer participants',
+        '-password -role -oauthProvider -oauthId -events',
+      )
+      .exec();
+  }
+
+  async findJoined(participantId: ObjectId) {
+    return await this.eventModel
+      .find({ participants: participantId })
       .populate(
         'organizer participants',
         '-password -role -oauthProvider -oauthId -events',
