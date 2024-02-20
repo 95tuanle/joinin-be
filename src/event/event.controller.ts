@@ -32,8 +32,8 @@ export class EventController {
     throw new HttpException('Event Not Found', 404);
   }
 
-  @Get('joinin/:_id')
-  async joinin(@Request() req: any, @Param('_id') _id: ObjectId) {
+  @Get('join/:_id')
+  async join(@Request() req: any, @Param('_id') _id: ObjectId) {
     if (!mongoose.Types.ObjectId.isValid(_id.toString()))
       throw new HttpException('Invalid ID', 400);
     const event = await this.eventService.findByIdWithoutPopulation(_id);
@@ -42,7 +42,18 @@ export class EventController {
       throw new HttpException('Organizer Cannot Join', 400);
     if (event.participants.includes(req.user._id))
       throw new HttpException('Already Joined', 400);
-    return await this.eventService.joinin(req.user._id, _id);
+    return await this.eventService.join(req.user._id, _id);
+  }
+
+  @Get('leave/:_id')
+  async leave(@Request() req: any, @Param('_id') _id: ObjectId) {
+    if (!mongoose.Types.ObjectId.isValid(_id.toString()))
+      throw new HttpException('Invalid ID', 400);
+    const event = await this.eventService.findByIdWithoutPopulation(_id);
+    if (!event) throw new HttpException('Event Not Found', 404);
+    if (!event.participants.includes(req.user._id))
+      throw new HttpException('Not Joined', 400);
+    return await this.eventService.leave(req.user._id, _id);
   }
 
   // @Patch()
