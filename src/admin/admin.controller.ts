@@ -28,12 +28,12 @@ export class AdminController {
   }
 
   @Get('users')
-  findAllUsers() {
-    return this.usersService.findAll();
+  async findAllUsers() {
+    return await this.usersService.findAll();
   }
 
   @Get('events')
-  findAllEvents() {
-    return this.eventsService.findAll();
+  async findAllEvents() {
+    return await this.eventsService.findAll();
   }
 }
