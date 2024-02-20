@@ -12,18 +12,18 @@ export class EventService {
     organizerId: ObjectId,
     createEventDto: CreateEventDto,
   ): Promise<Event> {
-    const newEvent = new this.eventModel({
+    const event = new this.eventModel({
       ...createEventDto,
       organizer: organizerId,
     });
-    await newEvent.save();
-    return newEvent.populate(
+    await event.save();
+    return event.populate(
       'organizer',
       '-password -role -oauthProvider -oauthId -events',
     );
   }
 
-  async joinin(
+  async join(
     participantId: ObjectId,
     eventId: ObjectId,
   ): Promise<Event | undefined> {
@@ -32,6 +32,22 @@ export class EventService {
         eventId,
         {
           $addToSet: { participants: participantId },
+        },
+        { new: true },
+      )
+      .populate(
+        'organizer participants',
+        '-password -role -oauthProvider -oauthId -events',
+      )
+      .exec();
+  }
+
+  async leave(participantId: ObjectId, eventId: ObjectId) {
+    return await this.eventModel
+      .findByIdAndUpdate(
+        eventId,
+        {
+          $pull: { participants: participantId },
         },
         { new: true },
       )
