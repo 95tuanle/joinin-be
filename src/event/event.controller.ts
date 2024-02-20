@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   HttpException,
   Param,
   Post,
@@ -12,6 +13,7 @@ import {
 import { EventService } from './event.service';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';
 import mongoose, { ObjectId } from 'mongoose';
+import { UpdateEventDto } from './dto/update-event.dto';
 
 @Controller('event')
 export class EventController {
@@ -49,20 +51,22 @@ export class EventController {
     return await this.eventService.joinin(req.user._id, _id);
   }
 
-  // @Patch()
-  // async updateEvent(
-  //   @Request() req: any,
-  //   @Body() updateEventDto: UpdateEventDto,
-  // ) {
-  //   const isValid = mongoose.Types.ObjectId.isValid(updateEventDto.eventId);
-  //   if (!isValid) throw new HttpException('Invalid ID', 400);
-  //   const updateEvent = await this.eventService.updateEvent(
-  //     req.user._id,
-  //     updateEventDto,
-  //   );
-  //   if (!updateEvent) throw new HttpException('User Not Found', 404);
-  //   return updateEvent;
-  // }
+  @Patch('/:_id')
+  async updateEvent(
+    @Request() req: any,
+    @Body() updateEventDto: UpdateEventDto,
+    @Param('_id') _id: ObjectId,
+  ) {
+    const isValid = mongoose.Types.ObjectId.isValid(_id.toString());
+    if (!isValid) throw new HttpException('Invalid ID', 400);
+    const updateEvent = await this.eventService.updateEvent(
+      req.user._id,
+      updateEventDto,
+      _id,
+    );
+    if (!updateEvent) throw new HttpException('User Not Found', 404);
+    return updateEvent;
+  }
 
   // @Delete(':id')
   // async deleteEvent(@Param('id') id: string) {

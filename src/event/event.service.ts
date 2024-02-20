@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model, ObjectId } from 'mongoose';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';
 import { Event } from 'src/event/schemas/event.schema';
 import { UserService } from 'src/user/user.service';
+import { UpdateEventDto } from './dto/update-event.dto';
 
 @Injectable()
 export class EventService {
@@ -68,18 +69,19 @@ export class EventService {
   //     .exec();
   // }
 
-  // async updateEvent(userId: string, updateEventDto: UpdateEventDto) {
-  //   const event = await this.eventModel.findById(updateEventDto.eventId).exec();
-  //   const user = await this.eventModel
-  //     .findById(updateEventDto.eventId)
-  //     .populate('eventOrganizer')
-  //     .exec();
-  //   if (!event || user._id.toString() !== userId)
-  //     throw new UnauthorizedException('Not Authorized changes');
-  //   return this.eventModel
-  //     .findByIdAndUpdate(updateEventDto.eventId, updateEventDto, { new: true })
-  //     .exec();
-  // }
+  async updateEvent(
+    userId: any,
+    updateEventDto: UpdateEventDto,
+    _id: ObjectId,
+  ) {
+    //const event = await this.eventModel.findById(_id).exec();
+    //const user = await this.userService.findByIdWithoutPassword(userId);
+    // if (!event || !user || user.email !== event.organizer.email)
+    //   throw new UnauthorizedException('Not Authorized changes');
+    return this.eventModel
+      .findByIdAndUpdate(_id, updateEventDto, { new: true })
+      .exec();
+  }
 
   async deleteEvent(id: string) {
     return this.eventModel.findByIdAndUpdate(id, { isValid: false }).exec();
