@@ -20,6 +20,7 @@ export class EventController {
     @Request() req: any,
     @Body() createEventDto: CreateEventDto,
   ) {
+    console.log(createEventDto);
     return await this.eventService.createEvent(req.user._id, createEventDto);
   }
 
@@ -69,8 +70,8 @@ export class EventController {
   //   return;
   // }
 
-  // @Get()
-  // async getAllEvents() {
-  //   return this.eventService.getEvents();
-  // }
+  @Get()
+  async getAllEvents() {
+    return this.eventService.getEvents();
+  }
 }

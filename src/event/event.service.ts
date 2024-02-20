@@ -55,9 +55,9 @@ export class EventService {
     return await this.eventModel.findById(_id).exec();
   }
 
-  // async getEvents(): Promise<Event[] | undefined> {
-  //   return this.eventModel.find().exec();
-  // }
+  async getEvents(): Promise<Event[] | undefined> {
+    return this.eventModel.find({ isValid: true }).exec();
+  }
 
   // async addUserToEvent(eventId: string, userId: string) {
   //   return this.eventModel
