@@ -12,13 +12,14 @@ export class EventService {
     private userService: UserService,
   ) {}
 
-  async createEvent(userId: string, createEventDto: CreateEventDto) {
+  async createEvent(userId: any, createEventDto: CreateEventDto) {
     const newEvent = new this.eventModel();
     newEvent.title = createEventDto.title;
     newEvent.description = createEventDto.description;
     newEvent.startAt = createEventDto.startAt;
     newEvent.endAt = createEventDto.endAt;
     newEvent.location = createEventDto.location;
+    newEvent.organizer = await this.userService.findByIdWithoutPassword(userId);
     return await newEvent.save();
   }
 
