@@ -13,7 +13,7 @@ export class EventsService {
 
   async findUpcoming() {
     return await this.eventModel
-      .find({ startAt: { $gt: Date.now() } })
+      .find({ startAt: { $gt: Date.now() }, isValid: true })
       .sort('startAt')
       .populate(
         'organizer participants',

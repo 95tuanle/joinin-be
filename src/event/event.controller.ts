@@ -37,7 +37,8 @@ export class EventController {
     if (!mongoose.Types.ObjectId.isValid(_id.toString()))
       throw new HttpException('Invalid ID', 400);
     const event = await this.eventService.findByIdWithoutPopulation(_id);
-    if (!event) throw new HttpException('Event Not Found', 404);
+    if (!event || !event.isValid)
+      throw new HttpException('Event Not Found', 404);
     if (req.user._id.equals(event.organizer))
       throw new HttpException('Organizer Cannot Join', 400);
     if (event.participants.includes(req.user._id))
