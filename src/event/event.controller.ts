@@ -9,6 +9,7 @@ import {
   Request,
   UsePipes,
   ValidationPipe,
+  Delete,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';
@@ -51,6 +52,19 @@ export class EventController {
     return await this.eventService.joinin(req.user._id, _id);
   }
 
+  @Get('quit/:_id')
+  async quit(@Request() req: any, @Param('_id') _id: ObjectId) {
+    if (!mongoose.Types.ObjectId.isValid(_id.toString()))
+      throw new HttpException('Invalid ID', 400);
+    const event = await this.eventService.findByIdWithoutPopulation(_id);
+    if (!event) throw new HttpException('Event Not Found', 404);
+    if (req.user._id.equals(event.organizer))
+      throw new HttpException('Organizer Cannot Quit', 400);
+    if (!event.participants.includes(req.user._id))
+      throw new HttpException('Already Quit', 400);
+    return await this.eventService.quitEvent(req.user._id, _id);
+  }
+
   @Patch('/:_id')
   async updateEvent(
     @Request() req: any,
@@ -68,14 +82,14 @@ export class EventController {
     return updateEvent;
   }
 
-  // @Delete(':id')
-  // async deleteEvent(@Param('id') id: string) {
-  //   const isValid = mongoose.Types.ObjectId.isValid(id);
-  //   if (!isValid) throw new HttpException('Invalid ID', 400);
-  //   const deletedEvent = await this.eventService.deleteEvent(id);
-  //   if (!deletedEvent) throw new HttpException('User Not Found', 404);
-  //   return;
-  // }
+  @Delete('/:_id')
+  async deleteEvent(@Param('_id') _id: ObjectId) {
+    const isValid = mongoose.Types.ObjectId.isValid(_id.toString());
+    if (!isValid) throw new HttpException('Invalid ID', 400);
+    const deletedEvent = await this.eventService.deleteEvent(_id);
+    if (!deletedEvent) throw new HttpException('User Not Found', 404);
+    return;
+  }
 
   @Get()
   async getAllEvents() {

@@ -83,15 +83,26 @@ export class EventService {
       .exec();
   }
 
-  async deleteEvent(id: string) {
+  async deleteEvent(id: ObjectId) {
     return this.eventModel.findByIdAndUpdate(id, { isValid: false }).exec();
   }
 
-  async removeUserFromEvent(eventId: string, userId: string) {
+  async quitEvent(
+    participantId: ObjectId,
+    eventId: ObjectId,
+  ): Promise<Event | undefined> {
     return this.eventModel
-      .findByIdAndUpdate(eventId, {
-        $pull: { participants: userId },
-      })
+      .findByIdAndUpdate(
+        eventId,
+        {
+          $pull: { participants: participantId },
+        },
+        { new: true },
+      )
+      .populate(
+        'organizer participants',
+        '-password -role -oauthProvider -oauthId -events',
+      )
       .exec();
   }
 }
