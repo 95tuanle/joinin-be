@@ -57,8 +57,35 @@ export class EventService {
     return await this.eventModel.findById(_id).exec();
   }
 
-  async getEvents(): Promise<Event[] | undefined> {
-    return this.eventModel.find({ isValid: true }).exec();
+  async getEvents(userId: string): Promise<Event[] | undefined> {
+    return this.eventModel
+      .find({
+        isValid: true,
+        organizer: { $ne: userId },
+        participants: { $nin: userId },
+        endAt: { $gt: +new Date() },
+      })
+      .sort({ startAt: 'asc' })
+      .exec();
+  }
+
+  async getJoinedEvent(userId: string): Promise<Event[] | undefined> {
+    return this.eventModel
+      .find({
+        isValid: true,
+        organizer: { $ne: userId },
+        participants: { $in: userId },
+        endAt: { $gt: +new Date() },
+      })
+      .sort({ startAt: 'asc' })
+      .exec();
+  }
+
+  async getCreatedEvent(userId: string) {
+    return this.eventModel
+      .find({ organizer: userId })
+      .sort({ startAt: 'asc' })
+      .exec();
   }
 
   // async addUserToEvent(eventId: string, userId: string) {

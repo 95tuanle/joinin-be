@@ -92,7 +92,17 @@ export class EventController {
   }
 
   @Get()
-  async getAllEvents() {
-    return this.eventService.getEvents();
+  async getAllEvents(@Request() req: any) {
+    return this.eventService.getEvents(req.user._id);
+  }
+
+  @Get('my')
+  async getMyEvent(@Request() req: any) {
+    return this.eventService.getCreatedEvent(req.user._id);
+  }
+
+  @Get('joined')
+  async getJoinedEvent(@Request() req: any) {
+    return this.eventService.getJoinedEvent(req.user._id);
   }
 }
