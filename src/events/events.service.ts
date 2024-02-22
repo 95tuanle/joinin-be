@@ -25,6 +25,7 @@ export class EventsService {
   async findJoined(participantId: ObjectId) {
     return await this.eventModel
       .find({ participants: participantId })
+      .sort('startAt')
       .populate(
         'organizer participants',
         '-password -role -oauthProvider -oauthId -events',
