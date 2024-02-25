@@ -1,15 +1,18 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   Param,
+  Patch,
   Post,
   Request,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';
 import mongoose, { ObjectId } from 'mongoose';
+import { UpdateEventDto } from './dto/update-event.dto';
 
 @Controller('event')
 export class EventController {
@@ -57,32 +60,57 @@ export class EventController {
     return await this.eventService.leave(req.user._id, _id);
   }
 
-  // @Patch()
-  // async updateEvent(
-  //   @Request() req: any,
-  //   @Body() updateEventDto: UpdateEventDto,
-  // ) {
-  //   const isValid = mongoose.Types.ObjectId.isValid(updateEventDto.eventId);
-  //   if (!isValid) throw new HttpException('Invalid ID', 400);
-  //   const updateEvent = await this.eventService.updateEvent(
-  //     req.user._id,
-  //     updateEventDto,
-  //   );
-  //   if (!updateEvent) throw new HttpException('User Not Found', 404);
-  //   return updateEvent;
-  // }
+  @Get('quit/:_id')
+  async quit(@Request() req: any, @Param('_id') _id: ObjectId) {
+    if (!mongoose.Types.ObjectId.isValid(_id.toString()))
+      throw new HttpException('Invalid ID', 400);
+    const event = await this.eventService.findByIdWithoutPopulation(_id);
+    if (!event) throw new HttpException('Event Not Found', 404);
+    if (req.user._id.equals(event.organizer))
+      throw new HttpException('Organizer Cannot Quit', 400);
+    if (!event.participants.includes(req.user._id))
+      throw new HttpException('Already Quit', 400);
+    return await this.eventService.quitEvent(req.user._id, _id);
+  }
 
-  // @Delete(':id')
-  // async deleteEvent(@Param('id') id: string) {
-  //   const isValid = mongoose.Types.ObjectId.isValid(id);
-  //   if (!isValid) throw new HttpException('Invalid ID', 400);
-  //   const deletedEvent = await this.eventService.deleteEvent(id);
-  //   if (!deletedEvent) throw new HttpException('User Not Found', 404);
-  //   return;
-  // }
+  @Patch('/:_id')
+  async updateEvent(
+    @Request() req: any,
+    @Body() updateEventDto: UpdateEventDto,
+    @Param('_id') _id: ObjectId,
+  ) {
+    const isValid = mongoose.Types.ObjectId.isValid(_id.toString());
+    if (!isValid) throw new HttpException('Invalid ID', 400);
+    const updateEvent = await this.eventService.updateEvent(
+      req.user._id,
+      updateEventDto,
+      _id,
+    );
+    if (!updateEvent) throw new HttpException('User Not Found', 404);
+    return updateEvent;
+  }
 
-  // @Get()
-  // async getAllEvents() {
-  //   return this.eventService.getEvents();
-  // }
+  @Delete('/:_id')
+  async deleteEvent(@Param('_id') _id: ObjectId) {
+    const isValid = mongoose.Types.ObjectId.isValid(_id.toString());
+    if (!isValid) throw new HttpException('Invalid ID', 400);
+    const deletedEvent = await this.eventService.deleteEvent(_id);
+    if (!deletedEvent) throw new HttpException('User Not Found', 404);
+    return;
+  }
+
+  @Get()
+  async getAllEvents(@Request() req: any) {
+    return this.eventService.getEvents(req.user._id);
+  }
+
+  @Get('my')
+  async getMyEvent(@Request() req: any) {
+    return this.eventService.getCreatedEvent(req.user._id);
+  }
+
+  @Get('joined')
+  async getJoinedEvent(@Request() req: any) {
+    return this.eventService.getJoinedEvent(req.user._id);
+  }
 }
