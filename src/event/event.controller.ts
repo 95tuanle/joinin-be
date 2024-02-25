@@ -8,8 +8,6 @@ import {
   Patch,
   Post,
   Request,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';
@@ -21,12 +19,10 @@ export class EventController {
   constructor(private eventService: EventService) {}
 
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true }))
   async createEvent(
     @Request() req: any,
     @Body() createEventDto: CreateEventDto,
   ) {
-    console.log(createEventDto);
     return await this.eventService.createEvent(req.user._id, createEventDto);
   }
 
