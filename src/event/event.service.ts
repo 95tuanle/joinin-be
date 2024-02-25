@@ -13,18 +13,31 @@ export class EventService {
     private userService: UserService,
   ) {}
 
-  async createEvent(userId: any, createEventDto: CreateEventDto) {
-    const newEvent = new this.eventModel();
-    newEvent.title = createEventDto.title;
-    newEvent.description = createEventDto.description;
-    newEvent.startAt = createEventDto.startAt;
-    newEvent.endAt = createEventDto.endAt;
-    newEvent.location = createEventDto.location;
-    newEvent.organizer = await this.userService.findByIdWithoutPassword(userId);
-    return await newEvent.save();
+//   async createEvent(userId: any, createEventDto: CreateEventDto) {
+//     const newEvent = new this.eventModel();
+//     newEvent.title = createEventDto.title;
+//     newEvent.description = createEventDto.description;
+//     newEvent.startAt = createEventDto.startAt;
+//     newEvent.endAt = createEventDto.endAt;
+//     newEvent.location = createEventDto.location;
+//     newEvent.organizer = await this.userService.findByIdWithoutPassword(userId);
+//     return await newEvent.save();
+  async createEvent(
+    organizerId: ObjectId,
+    createEventDto: CreateEventDto,
+  ): Promise<Event> {
+    const event = new this.eventModel({
+      ...createEventDto,
+      organizer: organizerId,
+    });
+    await event.save();
+    return event.populate(
+      'organizer',
+      '-password -role -oauthProvider -oauthId -events',
+    );
   }
 
-  async joinin(
+  async join(
     participantId: ObjectId,
     eventId: ObjectId,
   ): Promise<Event | undefined> {
@@ -33,6 +46,22 @@ export class EventService {
         eventId,
         {
           $addToSet: { participants: participantId },
+        },
+        { new: true },
+      )
+      .populate(
+        'organizer participants',
+        '-password -role -oauthProvider -oauthId -events',
+      )
+      .exec();
+  }
+
+  async leave(participantId: ObjectId, eventId: ObjectId) {
+    return await this.eventModel
+      .findByIdAndUpdate(
+        eventId,
+        {
+          $pull: { participants: participantId },
         },
         { new: true },
       )

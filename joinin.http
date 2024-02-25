@@ -87,8 +87,22 @@ Content-Type: application/json
 %}
 
 
-### JoinIn event
-GET {{host}}/event/joinin/{{event_id}}
+### Join event
+GET {{host}}/event/join/{{event_id}}
+Authorization: Bearer {{access_token}}
+
+> {%
+  client.global.set("event_id", response.body['_id'])
+%}
+
+
+### Leave event
+GET {{host}}/event/leave/{{event_id}}
+Authorization: Bearer {{access_token}}
+
+
+### Get joined events
+GET {{host}}/events/joined
 Authorization: Bearer {{access_token}}
 
 
