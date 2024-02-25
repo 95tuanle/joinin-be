@@ -1,4 +1,3 @@
-import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsNotEmpty,
@@ -41,19 +40,9 @@ export class CreateEventDto {
 
   @IsNotEmpty() @IsString() readonly location: string;
 
-  //@IsNotEmpty() @IsNumber() @Validate(IsFuture) readonly startAt: number;
-  @Transform(({ value }) => +new Date(value))
-  @IsNotEmpty()
-  @IsNumber()
-  @Validate(IsFuture)
-  readonly startAt: number;
+  @IsNotEmpty() @IsNumber() @Validate(IsFuture) readonly startAt: number;
 
-  //@IsNotEmpty() @IsNumber() @Validate(IsAfterStart) readonly endAt: number;
-  @Transform(({ value }) => +new Date(value))
-  @IsNotEmpty()
-  @IsNumber()
-  @Validate(IsAfterStart)
-  readonly endAt: number;
+  @IsNotEmpty() @IsNumber() @Validate(IsAfterStart) readonly endAt: number;
 
   @IsOptional() @IsBoolean() readonly isValid: boolean;
 }
