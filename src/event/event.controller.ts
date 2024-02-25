@@ -1,15 +1,15 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
-  Patch,
   HttpException,
   Param,
+  Patch,
   Post,
   Request,
   UsePipes,
   ValidationPipe,
-  Delete,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';

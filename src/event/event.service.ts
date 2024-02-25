@@ -1,6 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model, ObjectId } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { CreateEventDto } from 'src/event/dto/create-event.dto';
 import { Event } from 'src/event/schemas/event.schema';
 import { UserService } from 'src/user/user.service';
@@ -13,15 +13,15 @@ export class EventService {
     private userService: UserService,
   ) {}
 
-//   async createEvent(userId: any, createEventDto: CreateEventDto) {
-//     const newEvent = new this.eventModel();
-//     newEvent.title = createEventDto.title;
-//     newEvent.description = createEventDto.description;
-//     newEvent.startAt = createEventDto.startAt;
-//     newEvent.endAt = createEventDto.endAt;
-//     newEvent.location = createEventDto.location;
-//     newEvent.organizer = await this.userService.findByIdWithoutPassword(userId);
-//     return await newEvent.save();
+  //   async createEvent(userId: any, createEventDto: CreateEventDto) {
+  //     const newEvent = new this.eventModel();
+  //     newEvent.title = createEventDto.title;
+  //     newEvent.description = createEventDto.description;
+  //     newEvent.startAt = createEventDto.startAt;
+  //     newEvent.endAt = createEventDto.endAt;
+  //     newEvent.location = createEventDto.location;
+  //     newEvent.organizer = await this.userService.findByIdWithoutPassword(userId);
+  //     return await newEvent.save();
   async createEvent(
     organizerId: ObjectId,
     createEventDto: CreateEventDto,
