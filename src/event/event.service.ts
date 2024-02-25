@@ -9,15 +9,6 @@ import { UpdateEventDto } from './dto/update-event.dto';
 export class EventService {
   constructor(@InjectModel(Event.name) private eventModel: Model<Event>) {}
 
-  //   async createEvent(userId: any, createEventDto: CreateEventDto) {
-  //     const newEvent = new this.eventModel();
-  //     newEvent.title = createEventDto.title;
-  //     newEvent.description = createEventDto.description;
-  //     newEvent.startAt = createEventDto.startAt;
-  //     newEvent.endAt = createEventDto.endAt;
-  //     newEvent.location = createEventDto.location;
-  //     newEvent.organizer = await this.userService.findByIdWithoutPassword(userId);
-  //     return await newEvent.save();
   async createEvent(
     organizerId: ObjectId,
     createEventDto: CreateEventDto,
